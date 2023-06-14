@@ -1,22 +1,44 @@
 const http = require('http');
+const fs = require('fs');
+
 const server = http.createServer((req,res)=>{
-const url = req.url;
+    const method = req.method;
+    const url = req.url
+        if(url==='/'){
+   
+            fs.readFile("massage.txt",(err,data)=>{
+                if(err){
+                    console.log(err);
+                }
+                            res.write('<html><body><form action="/massage" method="POST"><input type="text"><button type="submit">send</button></form></body>');
+res.write("<html>")
+                res.write(`<body>${data}</body`)
+           
+                res.write('<html><body><form action="/massage" method="POST"><input type="text"><button type="submit">send</button></form></body>');
+                res.write("</html>")
+            return res.end();
+    
+        }) 
+        }
+       else  if(url==='/massage'&& method==='POST'){
+        res.on("data",(chunk)=>{
+            body.push(chunk);
 
- if(url==="/home"){
-    res.write("Welcome to the home page");
-    return res.end();
+        });
+        return req.on("end",()=>{
+            const parsedBody =buffer.concat(body).toString();
+            const massage =parsedBody.split("=")[1];
+            fs.writeFileSync("massage.txt",massage,(err)=>{
+                res.statusCode=302;
+                res.setHeader("Location","/");
+                return res.end();
+            });
+           
+        });
+           
+        }
+       
+       
 
-}
-else if(url==="/about"){
-    res.write("welcome to a about page");
-    return  res.end();
-
-}
-else if(url==="/node"){
-    res.write("welcome to a node js project");
-    return res.end();
-}
-
-res.end();
-})
+});
 server.listen(3000);

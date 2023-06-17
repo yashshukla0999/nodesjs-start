@@ -26,7 +26,7 @@ else if (url === '/massage' && method === 'POST') {
     });
     return req.on("end", () => {
         const parsedBody = Buffer.concat(body).toString();
-        const massage = parsedBody.split("=")[1];
+        const massage = parsedBody.split("=")[0];
         fs.writeFileSync("massage.txt", massage, (err) => {
             
         });
